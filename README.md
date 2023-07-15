@@ -24,6 +24,7 @@ df = DataFrame(
 
 ### cat_relevel(): 
 #### This function changes the order of levels in a categorical variable. It accepts two arguments - a column name and an array of levels in the desired order.
+
 ```
 custom_order = @chain df begin
     @mutate(CatVar = ~cat_relevel(CatVar, ["Zilch", "Medium", "High", "Low"]))
@@ -36,6 +37,7 @@ print(levels(custom_order[!,:CatVar]))
 
 ### cat_rev(): 
 #### This function reverses the order of levels in a categorical variable. It only requires one argument - the column name whose levels are to be reversed
+```
 reversed_order = @chain df begin
     @mutate(CatVar = ~cat_rev(CatVar))
 end
@@ -127,7 +129,7 @@ end
 
 ### cat_lump_min(): 
 #### This function wil lump any cargory with less than the minimum number of entries and recateogrize it as "Other" as the default, or a category name chosen by the user
-
+```
 @chain df begin
     @count(CatVar)
 end
