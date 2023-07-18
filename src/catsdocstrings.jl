@@ -59,11 +59,11 @@ julia> cat_array = CategoricalArray(["A", "B", "C", "A", "B", "B"], ordered=true
  "B"
  "B"
  
-julia> levels_order = ["B", "A", "C"]
-3-element Vector{String}:
- "B"
- "A"
- "C"
+ julia> levels_order = Vector{String}(["B", "A", "C"])
+ 3-element Vector{String}:
+  "B"
+  "A"
+  "C"
 
 julia> cat_relevel(cat_array, levels_order)
 6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
