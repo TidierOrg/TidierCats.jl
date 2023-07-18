@@ -36,18 +36,20 @@ function cat_infreq(cat_array)
     # Count frequency of each category using countmap
     freq_dict = countmap(cat_array)
     
-    # Sort by frequency
-    sorted_freq_dict = sort(freq_dict, byvalue=true, rev=true)
+    # Convert dict to vector of key-value pairs
+    freq_pairs = collect(freq_dict)
+
+    # Sort by frequency in descending order
+    sorted_freq_pairs = sort!(freq_pairs, by=x -> x[2], rev=true)
 
     # Get the sorted levels
-    new_levels = collect(keys(sorted_freq_dict))
+    new_levels = [String(pair[1]) for pair in sorted_freq_pairs]
 
     # Create a new categorical array with the levels ordered by frequency
     new_cat_array = CategoricalArray([String(v) for v in cat_array], ordered=true, levels=new_levels)
     
     return new_cat_array
 end
-
 
 """
 $docstring_cat_lump
@@ -114,13 +116,10 @@ end
 """
 $docstring_cat_collapse
 """
-function cat_collapse(cat_array::CategoricalArray, levels_map::Dict)
-    # Generate a new array with the collapsed levels based on the mapping
-    collapsed_array = [get(levels_map, String(x), String(x)) for x in cat_array]
-
-    # Create a new categorical array with the collapsed values
-    new_cat_array = CategoricalArray(collapsed_array, ordered=true)
-
+function cat_collapse(cat_array, levels_map)
+    # Create a new categorical array with collapsed levels
+    new_cat_array = CategoricalArrays.CategoricalArray([levels_map[String(v)] for v in cat_array], ordered=true, levels=unique(values(levels_map)))
+    
     return new_cat_array
 end
 
