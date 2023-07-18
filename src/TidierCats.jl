@@ -32,25 +32,24 @@ end
 """
 $docstring_cat_infreq
 """
-function cat_infreq(cat_array)
-    # Count frequency of each category using countmap
-    freq_dict = countmap(cat_array)
+function cat_infreq(cat_array::CategoricalArray)
+    # Create a DataFrame from the CategoricalArray
+    df = DataFrame(category = cat_array)
     
-    # Convert dict to vector of key-value pairs
-    freq_pairs = collect(freq_dict)
-
+    # Group by categorical column and count frequency
+    freq_df = combine(groupby(df, :category), nrow => :frequency)
+    
     # Sort by frequency in descending order
-    sorted_freq_pairs = sort!(freq_pairs, by=x -> x[2], rev=true)
+    sort!(freq_df, :frequency, rev=true)
 
     # Get the sorted levels
-    new_levels = [String(pair[1]) for pair in sorted_freq_pairs]
+    new_levels = [String(level) for level in freq_df.category]
 
     # Create a new categorical array with the levels ordered by frequency
-    new_cat_array = CategoricalArray([String(v) for v in cat_array], ordered=true, levels=new_levels)
+    new_cat_array = CategoricalArray([String(v) for v in df.category], ordered=true, levels=new_levels)
     
     return new_cat_array
 end
-
 """
 $docstring_cat_lump
 """

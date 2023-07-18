@@ -84,7 +84,7 @@ Categorical array with levels reordered by frequency.
 ```jldoctest
 julia> using CategoricalArrays
 
-julia> using StatsBase
+julia> using DataFrames
 
 julia> cat_array = CategoricalArray(["A", "B", "B"], ordered=true)
 3-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
@@ -185,35 +185,11 @@ desc: If true, the levels are ordered in descending order of the summary statist
 Categorical array with the levels reordered.
 # Examples
 ```jldoctest
-julia> using CategoricalArrays
-
-julia> using StatsBase
-
-julia> cat_var = ["A", "B", "A", "B", "A", "B", "C", "C", "C"]
-9-element Vector{String}:
- "A"
- "B"
- "A"
- "B"
- "A"
- "B"
- "C"
- "C"
- "C"
-
-julia> order_var = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-9-element Vector{Int64}:
- 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-
-julia> cat_reorder(cat_var, order_var, "mean")
+julia> using CategoricalArrays;
+       using StatsBase;
+       cat_var = String["A", "B", "A", "B", "A", "B", "C", "C", "C"];
+       order_var = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+       cat_reorder(cat_var, order_var, "mean")
 9-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
  "A"
  "B"
@@ -242,7 +218,6 @@ Categorical array with the levels collapsed.
 ```jldoctest
 julia> using CategoricalArrays
 
-
 julia> cat_array = CategoricalArray(["A", "B", "C", "D", "E"], ordered=true)
 5-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
  "A"
@@ -251,13 +226,7 @@ julia> cat_array = CategoricalArray(["A", "B", "C", "D", "E"], ordered=true)
  "D"
  "E"
 
-julia> levels_map = Dict("A" => "A", "B" => "A", "C" => "C", "D" => "C", "E" => "E")
-Dict{String, String} with 5 entries:
-  "B" => "A"
-  "A" => "A"
-  "C" => "C"
-  "D" => "C"
-  "E" => "E"
+julia> levels_map = Dict("A" => "A", "B" => "A", "C" => "C", "D" => "C", "E" => "E");
 
 julia> cat_collapse(cat_array, levels_map)
 5-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
