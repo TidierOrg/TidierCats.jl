@@ -1,17 +1,11 @@
+module TestTidierCats
+
 using TidierCats
 using Test
+using Documenter
 
-@testset "TidierCats.jl" begin
-    julia> cat_array = CategoricalArray(["A", "B", "C", "A", "B", "B"], ordered=true);
-julia> levels_order = ["B", "A", "C"];
-julia> cat_relevel(cat_array, levels_order)
-6-element CategoricalArray{String,1,UInt32}:
- "A"
- "B"
- "C"
- "A"
- "B"
- "B"
+DocMeta.setdocmeta!(TidierCats, :DocTestSetup, :(using TidierCats); recursive=true)
 
-Levels (ordered): "B" < "A" < "C"
+doctest(TidierCats)
+
 end

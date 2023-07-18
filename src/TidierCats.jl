@@ -2,8 +2,10 @@ module TidierCats
 
 using CategoricalArrays
 using DataFrames 
+using StatsBase
 
 export cat_rev, cat_relevel, cat_infreq, cat_lump, cat_reorder, cat_collapse, cat_lump_min, cat_lump_prop, as_categorical
+include("catsdocstrings.jl")
 
 """
 $docstring_cat_rev
@@ -19,7 +21,6 @@ end
 """
 $docstring_cat_relevel
 """
-
 function cat_relevel(cat_array::CategoricalArray, levels_order::Vector{String})
     ordered_levels = [x for x in levels_order if x in levels(cat_array)]
     append!(ordered_levels, [x for x in levels(cat_array) if x ∉ ordered_levels])
@@ -31,20 +32,15 @@ end
 """
 $docstring_cat_infreq
 """
-
-
 function cat_infreq(cat_array)
-    # Convert to DataFrame
-    df = DataFrame(category = cat_array)
-    
-    # Count frequency of each category
-    freq_df = combine(groupby(df, :category), nrow => :count)
+    # Count frequency of each category using countmap
+    freq_dict = countmap(cat_array)
     
     # Sort by frequency
-    sort!(freq_df, :count, rev = true)
+    sorted_freq_dict = sort(freq_dict, byvalue=true, rev=true)
 
     # Get the sorted levels
-    new_levels = freq_df.category
+    new_levels = collect(keys(sorted_freq_dict))
 
     # Create a new categorical array with the levels ordered by frequency
     new_cat_array = CategoricalArray([String(v) for v in cat_array], ordered=true, levels=new_levels)
@@ -56,8 +52,6 @@ end
 """
 $docstring_cat_lump
 """
-
-
 function cat_lump(cat_array, n::Int)
     # Convert to DataFrame
     df = DataFrame(category = cat_array)
@@ -83,15 +77,13 @@ end
 """
 $docstring_as_categorical
 """
-
 function as_categorical(arr::AbstractArray)
-    return CategoricalArray(arr)
+  return CategoricalArray(map(x -> ismissing(x) ? missing : x, arr)) 
 end
 
 """
 $docstring_cat_reorder
 """
-
 function cat_reorder(cat_var::AbstractVector, order_var::AbstractVector, fun::String, desc::Bool=true)
     # Convert the categorical variable column to a CategoricalArray
     cat_var = CategoricalArray(cat_var)
@@ -122,8 +114,6 @@ end
 """
 $docstring_cat_collapse
 """
-
-
 function cat_collapse(cat_array::CategoricalArray, levels_map::Dict)
     # Generate a new array with the collapsed levels based on the mapping
     collapsed_array = [get(levels_map, String(x), String(x)) for x in cat_array]
@@ -137,8 +127,6 @@ end
 """
 $docstring_cat_lump_min
 """
-
-
 function cat_lump_min(cat_array, min::Int, other_level::String = "Other")
     # Convert to DataFrame
     df = DataFrame(category = cat_array)
@@ -161,8 +149,6 @@ end
 """
 $docstring_cat_lump_prop
 """
-
-
 function cat_lump_prop(cat_array, prop::Float64, other_level::String = "Other")
     # Convert to DataFrame
     df = DataFrame(category = cat_array)
