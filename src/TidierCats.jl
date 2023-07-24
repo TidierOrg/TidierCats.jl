@@ -115,8 +115,6 @@ end
 """
 $docstring_cat_collapse
 """
-using CategoricalArrays
-
 function cat_collapse(cat_array::CategoricalArray, levels_map::Dict)
     # Generate a new array with the collapsed levels based on the mapping
     collapsed_array = [get(levels_map, String(x), String(x)) for x in cat_array]
