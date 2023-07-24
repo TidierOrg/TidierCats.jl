@@ -115,12 +115,18 @@ end
 """
 $docstring_cat_collapse
 """
-function cat_collapse(cat_array, levels_map)
-    # Create a new categorical array with collapsed levels
-    new_cat_array = CategoricalArrays.CategoricalArray([levels_map[String(v)] for v in cat_array], ordered=true, levels=unique(values(levels_map)))
-    
+using CategoricalArrays
+
+function cat_collapse(cat_array::CategoricalArray, levels_map::Dict)
+    # Generate a new array with the collapsed levels based on the mapping
+    collapsed_array = [get(levels_map, String(x), String(x)) for x in cat_array]
+    # Create a new categorical array with the collapsed values
+    new_cat_array = CategoricalArray(collapsed_array, ordered=true)
+
     return new_cat_array
 end
+
+
 
 """
 $docstring_cat_lump_min
