@@ -1,12 +1,37 @@
-# TidierCats
+# TidierCats.jl
 
-## The goal of this package is to bring the convenience and simple usability of Forcats in R to Julia. This package was designed  to work with Tidier.jl, but can also work independently.
+## What is TidierStrings.jl
 
-### This package includes: cat_rev, cat_relevel, cat_infreq, cat_lump, cat_reorder, cat_collapse, cat_lump_min, cat_lump_prop, as_categorical
- 
+`TidierCats.jl `is a 100% Julia implementation of the R forcats package. 
+
+`TidierCats.jl` has one main goal: to implement forcats's straightforward syntax and of ease of use while working with categorical variables for Julia users. While this package was develeoped to work seamelessly with `Tidier.jl` fucntions and macros, it can also work as a indepentenly as a standalone package. This package is powered by CateogricalArrays.jl 
+
+
+## What functions does TidierCats.jl support?
+
+-`cat_rev()`
+-`cat_relevel()`
+-`cat_infreq()`
+-`cat_reorder()`
+-`cat_collapse()`
+-`cat_lump_min()`
+-`cat_lump_prop()`
+-`as_categorical()`
+
+
+## Installation
+
+For the development version:
+
+```julia
+using Pkg
+Pkg.add(url = "https://github.com/TidierOrg/TidierCats.jl.git")
 ```
-using CategoricalArrays
+## Examples
+
+```
 using Tidier
+using TidierCats
 using Random
 
 Random.seed!(10)
@@ -22,8 +47,8 @@ df = DataFrame(
 )
 ```
 
-### cat_relevel(): 
-#### This function changes the order of levels in a categorical variable. It accepts two arguments - a column name and an array of levels in the desired order.
+#### `cat_relevel()`
+This function changes the order of levels in a categorical variable. It accepts two arguments - a column name and an array of levels in the desired order.
 
 ```
 custom_order = @chain df begin
@@ -32,11 +57,14 @@ end
 
 print(levels(df[!,:CatVar]))
 print(levels(custom_order[!,:CatVar]))
-
+```
+```
+["High", "Medium", "Low", "Zilch"]
+["Zilch", "Medium", "High", "Low"]
 ```
 
-### cat_rev(): 
-#### This function reverses the order of levels in a categorical variable. It only requires one argument - the column name whose levels are to be reversed
+#### `cat_rev()` 
+This function reverses the order of levels in a categorical variable. It only requires one argument - the column name whose levels are to be reversed
 ```
 reversed_order = @chain df begin
     @mutate(CatVar = ~cat_rev(CatVar))
@@ -44,46 +72,67 @@ end
 
 print(levels(df[!,:CatVar]))
 print(levels(reversed_order[!,:CatVar]))
-
 ```
 
-### cat_infreq(): This function reorders levels of a categorical variable based on their frequencies, with most frequent level first. The single argument is column name
+```
+["High", "Medium", "Low", "Zilch"]
+["Zilch", "Low", "Medium", "High"]
+```
+
+#### `cat_infreq()` 
+This function reorders levels of a categorical variable based on their frequencies, with most frequent level first. The single argument is column name
 
 ```
 @chain df begin
     @count(CatVar)
 end
+```
 
+```
+ Row │ CatVar  n     
+     │ Cat…    Int64 
+─────┼───────────────
+   1 │ High       19
+   2 │ Medium     11
+   3 │ Low        14
+   4 │ Zilch      13
+```
+
+```
 orderedbyfrequency = @chain df begin
     @mutate(CatVar = ~cat_infreq(CatVar))
 end
 
 print(levels(df[!,:CatVar]))
 print(levels(orderedbyfrequency[!,:CatVar]))
-
-@chain df begin
-    @count(CatVar)
-end
-
-```
-### cat_lump(): 
-#### This function lumps the least frequent levels into a new "Other" level. It accepts two arguments - a column name and an integer specifying the number of levels to keep.
 ```
 
+```
+["High", "Medium", "Low", "Zilch"]
+["High", "Low", "Zilch", "Medium"]
+```
+
+#### `cat_lump()` 
+This function lumps the least frequent levels into a new "Other" level. It accepts two arguments - a column name and an integer specifying the number of levels to keep.
+
+
+```
 lumped_cats = @chain df begin
     @mutate(CatVar = ~cat_lump(CatVar,2))
 end
 
 print(levels(df[!,:CatVar]))
 print(levels(lumped_cats[!,:CatVar]))
-
-@chain lumped_cats begin
-    @count(CatVar)
-end
 ```
 
-### cat_reorder(): 
-#### This function reorders levels of a categorical variable based on a mean of a second variable. It takes three arguments - a categorical column , a numerical column by which to reorder, and a function to calculate the summary statistic (currently only supports mean, median). There is a fourth optional argument which defaults to true, if set to false, it order the categories in ascending order.
+```
+["High", "Medium", "Low", "Zilch"]
+["High", "Low", "Other"]
+```
+
+
+#### `cat_reorder()` 
+This function reorders levels of a categorical variable based on a mean of a second variable. It takes three arguments - a categorical column , a numerical column by which to reorder, and a function to calculate the summary statistic (currently only supports mean, median). There is a fourth optional argument which defaults to true, if set to false, it order the categories in ascending order.
 
 ```
 
@@ -96,29 +145,64 @@ df4 = @chain df3 begin
     @mutate(cat_var= ~cat_reorder(cat_var, order_var, "median" ))
 end
 
+@chain df3 begin
+    @mutate(catty = ~as_categorical(cat_var))
+    @group_by(cat_var)
+    @summarise(median = median(order_var))
+end
 
 print(levels(df3[!,:cat_var]))
 print(levels(df4[!,:cat_var]))
-
-@chain df3 begin
-    @mutate(catty = ~as_categorical(cat_var))
-    @group_by(catty)
-    #@summarise(median = median(order_var))
-end
 ```
 
-### cat_collapse(): 
-#### This function collapses levels in a categorical variable according to a specified mapping. It requires two arguments - a categorical column and a dictionary that maps original levels to new ones.
+```
+ Row │ cat_var  median   
+     │ String   Float64  
+─────┼───────────────────
+   1 │ High     0.385143
+   2 │ Low      0.510809
+   3 │ Medium   0.65539
+
+["High", "Low", "Medium"]
+["Medium", "Low", "High"]
+```
+
+
+#### `cat_collapse()`
+This function collapses levels in a categorical variable according to a specified mapping. It requires two arguments - a categorical column and a dictionary that maps original levels to new ones.
 ```
 df5 = @chain df begin
     @mutate(CatVar = ~cat_collapse(CatVar, Dict("Low" => "bad", "Zilch" => "bad")))
 end
 
-print(levels(df[!,:CatVar]))
-print(levels(df5[!,:CatVar]))
+@chain df begin
+    @count(CatVar)
+end
+
+@chain df5 begin 
+    @count(CatVar)
+end
 ```
-### as_categorical(): 
-#### This function converts a standard Julia array to a categorical array. The only argument it needs is the colunn name to be converted.
+
+```
+ Row │ CatVar  n     
+     │ Cat…    Int64 
+─────┼───────────────
+   1 │ High       19
+   2 │ Medium     11
+   3 │ Low        14
+   4 │ Zilch      13
+
+ Row │ CatVar  n     
+     │ Cat…    Int64 
+─────┼───────────────
+   1 │ High       19
+   2 │ Medium     11
+   3 │ bad        27
+
+```
+#### `as_categorical()`
+This function converts a standard Julia array to a categorical array. The only argument it needs is the colunn name to be converted.
 ```
 test = DataFrame( w = ["A", "B", "C", "D"])
 
@@ -127,42 +211,47 @@ test = DataFrame( w = ["A", "B", "C", "D"])
 end
 ```
 
-### cat_lump_min(): 
-#### This function wil lump any cargory with less than the minimum number of entries and recateogrize it as "Other" as the default, or a category name chosen by the user
 ```
-@chain df begin
-    @count(CatVar)
-end
+ Row │ w    
+     │ Cat… 
+─────┼──────
+   1 │ A
+   2 │ B
+   3 │ C
+   4 │ D
+```
+
+#### `cat_lump_min()`
+This function wil lump any cargory with less than the minimum number of entries and recateogrize it as "Other" as the default, or a category name chosen by the user
+```
 lumpedbymin = @chain df begin
     @mutate(CatVar = ~cat_lump_min(CatVar, 14))
 end
 
 print(levels(df[!,:CatVar]))
 print(levels(lumpedbymin[!,:CatVar]))
+```
 
 ```
-### cat_lump_min(): 
-#### This function wil lump any cargory with less than the minimum proportion and recateogrize it as "Other" as the default, or a category name chosen by the user
+["High", "Medium", "Low", "Zilch"]
+["High", "Low", "Other"]
+```
+
+
+#### `cat_lump_prop()`
+This function wil lump any cargory with less than the minimum proportion and recateogrize it as "Other" as the default, or a category name chosen by the user
 
 ```
 lumpedbyprop = @chain df begin
-    @mutate(CatVar = ~cat_lump_prop(CatVar, .25, "wow"))
+    @mutate(CatVar = ~cat_lump_prop(CatVar, .25, "new name"))
 end
-
 
 print(levels(df[!,:CatVar]))
 print(levels(lumpedbyprop[!,:CatVar]))
 ```
 
-
-### cat_na_value_to_level(): 
-#### This function will replace any missing values in a categorical array with "Missing" to make sure they appear on plots. 
-
 ```
-x = categorical([missing, "A", "B", missing, "A"])
-
-cat_na_value_to_level(x)
-
-print(levels(x))
-
+["High", "Medium", "Low", "Zilch"]
+["High", "new name"]
 ```
+
