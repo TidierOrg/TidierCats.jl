@@ -32,6 +32,7 @@ Pkg.add(url = "https://github.com/TidierOrg/TidierCats.jl.git")
 ```
 using Tidier
 using TidierCats
+using CategoricalArrays
 using Random
 
 Random.seed!(10)
