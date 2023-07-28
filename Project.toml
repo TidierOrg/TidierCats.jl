@@ -1,7 +1,7 @@
 name = "TidierCats"
 uuid = "79ddc9fe-4dbf-4a56-a832-df41fb326d23"
 authors = ["Daniel Rizk"]
-version = "0.1.0-DEV"
+version = "0.1.0"
 
 [deps]
 CategoricalArrays = "324d7699-5711-5eae-9e2f-1d82baa6b597"
