@@ -1,21 +1,21 @@
 
 const docstring_cat_rev = 
 """
-cat_rev(cat_array)
+    cat_rev(cat_array)
 
 Reverses the order of levels in a categorical array.
 
 # Arguments
 `cat_array`: Input categorical array.
+
 # Returns
 Categorical array with reversed order of levels.
+
 # Examples
 
 ```jldoctest
-julia> using CategoricalArrays
-
 julia> cat_array = CategoricalArray(["A", "B", "C", "A", "B", "B"], ordered=true)
-6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+6-element CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "C"
@@ -24,7 +24,7 @@ julia> cat_array = CategoricalArray(["A", "B", "C", "A", "B", "B"], ordered=true
  "B"
 
 julia> cat_rev(cat_array)
-6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+6-element CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "C"
@@ -34,24 +34,24 @@ julia> cat_rev(cat_array)
 ```
 """
 
-
 const docstring_cat_relevel = 
 """
-cat_relevel(cat_array::CategoricalArray, levels_order::Vector{String})
+    cat_relevel(cat_array::CategoricalArray, levels_order::Vector{String})
 
 Reorders the levels in a categorical array according to the provided order.
 
 # Arguments
 `cat_array`: Input categorical array.
 `levels_order`: Vector of levels in the desired order.
+
 # Returns
 Categorical array with levels reordered according to levels_order.
-# Examples
-```jldoctest
-julia> using CategoricalArrays
 
+# Examples
+
+```jldoctest
 julia> cat_array = CategoricalArray(["A", "B", "C", "A", "B", "B"], ordered=true)
-6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+6-element CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "C"
@@ -60,7 +60,7 @@ julia> cat_array = CategoricalArray(["A", "B", "C", "A", "B", "B"], ordered=true
  "B"
 
 julia> cat_relevel(cat_array, ["B", "A", "C"])
-6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+6-element CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "C"
@@ -72,28 +72,27 @@ julia> cat_relevel(cat_array, ["B", "A", "C"])
 
 const docstring_cat_infreq = 
 """
-cat_infreq(cat_array)
+    cat_infreq(cat_array)
 
 Orders the levels in a categorical array by their frequency, with the most common level first.
 
 # Arguments
 `cat_array`: Input categorical array.
+
 # Returns
 Categorical array with levels reordered by frequency.
+
 # Examples
+
 ```jldoctest
-julia> using CategoricalArrays
-
-julia> using DataFrames
-
 julia> cat_array = CategoricalArray(["A", "B", "B"], ordered=true)
-3-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+3-element CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "B"
 
 julia> cat_infreq(cat_array)
-3-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+3-element CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "B"
@@ -102,23 +101,22 @@ julia> cat_infreq(cat_array)
 
 const docstring_cat_lump = 
 """
-cat_lump(cat_array, n::Int)
+    cat_lump(cat_array, n::Int)
 
 Orders the levels in a categorical array by their frequency and keeps only the 'n' most common levels. All other levels are replaced by "Other".
 
 Arguments
 `cat_array`: Input categorical array.
 `n`: Number of levels to keep as they are, the rest become "Other"
+
 # Returns
 Categorical array with the least frequent levels lumped as "Other". 
+
 # Examples
+
 ```jldoctest
-julia> using CategoricalArrays
-
-julia> using DataFrames
-
 julia> cat_array = CategoricalArray(["A", "B", "C", "A", "B", "B", "D", "E", "F"], ordered=true)
-9-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+9-element CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "C"
@@ -133,17 +131,19 @@ julia> cat_array = CategoricalArray(["A", "B", "C", "A", "B", "B", "D", "E", "F"
 
 const docstring_as_categorical = 
 """
-as_categorical(arr::AbstractArray)
+    as_categorical(arr::AbstractArray)
 
 Converts the input array to a CategoricalArray.
 
 # Arguments
 `arr`: Input array.
+
 # Returns
 CategoricalArray constructed from the input array.
+
 # Examples
+
 ```jldoctest
-julia> using CategoricalArrays
 julia> arr = ["A", "B", "C", "A", "B", "B", "D", "E", missing]
 9-element Vector{Union{Missing, String}}:
  "A"
@@ -157,7 +157,7 @@ julia> arr = ["A", "B", "C", "A", "B", "B", "D", "E", missing]
  missing
  
 julia> as_categorical(arr)
-9-element CategoricalArrays.CategoricalArray{Union{Missing, String},1,UInt32}:
+9-element CategoricalArray{Union{Missing, String},1,UInt32}:
  "A"
  "B"
  "C"
@@ -167,12 +167,12 @@ julia> as_categorical(arr)
  "D"
  "E"
  missing
- ```
+```
 """
 
 const docstring_cat_reorder = 
 """
-cat_reorder(cat_var::AbstractVector, order_var::AbstractVector, fun::String, desc::Bool=true)
+    cat_reorder(cat_var::AbstractVector, order_var::AbstractVector, fun::String, desc::Bool=true)
 
 Reorders the levels in a categorical variable column based on a summary statistic calculated from another variable.
 
@@ -180,17 +180,18 @@ Arguments
 `cat_var`: Categorical variable column to reorder.
 `order_var`: Variable to calculate the summary statistic from.
 `fun`: Function to calculate the summary statistic. Options are "mean" and "median".
-desc: If true, the levels are ordered in descending order of the summary statistic.
+`desc`: If true, the levels are ordered in descending order of the summary statistic.
+
 # Returns
 Categorical array with the levels reordered.
+
 # Examples
+
 ```jldoctest
-julia> using CategoricalArrays;
-       using StatsBase;
-       cat_var = String["A", "B", "A", "B", "A", "B", "C", "C", "C"];
+julia> cat_var = String["A", "B", "A", "B", "A", "B", "C", "C", "C"];
        order_var = [1, 2, 3, 4, 5, 6, 7, 8, 9];
        cat_reorder(cat_var, order_var, "mean")
-9-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+9-element CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "A"
@@ -212,14 +213,15 @@ Collapses levels in a categorical variable column based on a provided mapping.
 # Arguments
 `cat_array`: Categorical variable column to collapse.
 levels_map: A dictionary with the original levels as keys and the new levels as values. Levels not in the keys will be kept the same.
+
 # Returns
 Categorical array with the levels collapsed.
-# Examples
-```jldoctest
-julia> using CategoricalArrays
 
+# Examples
+
+```jldoctest
 julia> cat_array = CategoricalArray(["A", "B", "C", "D", "E"], ordered=true)
-5-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+5-element CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "C"
@@ -229,7 +231,7 @@ julia> cat_array = CategoricalArray(["A", "B", "C", "D", "E"], ordered=true)
 julia> levels_map = Dict("A" => "A", "B" => "A", "C" => "C", "D" => "C", "E" => "E");
 
 julia> cat_collapse(cat_array, levels_map)
-5-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+5-element CategoricalArray{String,1,UInt32}:
  "A"
  "A"
  "C"
@@ -255,12 +257,8 @@ Categorical array with levels lumped.
 
 # Examples
 ```jldoctest 
-julia> using CategoricalArrays
-
-julia> using DataFrames
-
 julia> cat_array = CategoricalArray(["A", "B", "B", "C", "C", "D"])
-6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+6-element CategoricalArray{String,1,UInt32}:
  "A" 
  "B"
  "B"
@@ -269,7 +267,7 @@ julia> cat_array = CategoricalArray(["A", "B", "B", "C", "C", "D"])
  "D"
 
 julia> cat_lump_min(cat_array, 2)  
-6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+6-element CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "B"
@@ -294,13 +292,10 @@ Lumps infrequent levels in a categorical array into an 'other' level based on pr
 Categorical array with levels lumped based on proportion.
 
 # Examples
+
 ```jldoctest
-julia> using CategoricalArrays
-
-julia> using DataFrames
-
 julia> cat_array = CategoricalArray(["A", "B", "B", "C", "C", "D"])
-6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+6-element CategoricalArray{String,1,UInt32}:
  "A"
  "B" 
  "B"
@@ -309,7 +304,7 @@ julia> cat_array = CategoricalArray(["A", "B", "B", "C", "C", "D"])
  "D"
  
 julia> cat_lump_prop(cat_array, 0.3)
-6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+6-element CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "B"

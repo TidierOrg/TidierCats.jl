@@ -2,7 +2,10 @@ module TidierCats
 
 using CategoricalArrays
 using DataFrames 
-using StatsBase
+using Statistics
+using Reexport
+
+@reexport using CategoricalArrays
 
 export cat_rev, cat_relevel, cat_infreq, cat_lump, cat_reorder, cat_collapse, cat_lump_min, cat_lump_prop, as_categorical
 include("catsdocstrings.jl")
@@ -16,7 +19,6 @@ function cat_rev(cat_array)
     new_cat_array = CategoricalArray([String(v) for v in cat_array], ordered=true, levels=ordered_levels)
     return new_cat_array
 end
-
 
 """
 $docstring_cat_relevel
