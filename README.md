@@ -1,6 +1,6 @@
 # TidierCats.jl
 
-## What is TidierStrings.jl
+## What is TidierCats.jl
 
 `TidierCats.jl `is a 100% Julia implementation of the R forcats package. 
 
