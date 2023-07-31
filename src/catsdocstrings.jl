@@ -15,7 +15,7 @@ Categorical array with reversed order of levels.
 
 ```jldoctest
 julia> cat_array = CategoricalArray(["A", "B", "C", "A", "B", "B"], ordered=true)
-6-element CategoricalArray{String,1,UInt32}:
+6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "C"
@@ -24,7 +24,7 @@ julia> cat_array = CategoricalArray(["A", "B", "C", "A", "B", "B"], ordered=true
  "B"
 
 julia> cat_rev(cat_array)
-6-element CategoricalArray{String,1,UInt32}:
+6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "C"
@@ -51,7 +51,7 @@ Categorical array with levels reordered according to levels_order.
 
 ```jldoctest
 julia> cat_array = CategoricalArray(["A", "B", "C", "A", "B", "B"], ordered=true)
-6-element CategoricalArray{String,1,UInt32}:
+6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "C"
@@ -60,7 +60,7 @@ julia> cat_array = CategoricalArray(["A", "B", "C", "A", "B", "B"], ordered=true
  "B"
 
 julia> cat_relevel(cat_array, ["B", "A", "C"])
-6-element CategoricalArray{String,1,UInt32}:
+6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "C"
@@ -86,13 +86,13 @@ Categorical array with levels reordered by frequency.
 
 ```jldoctest
 julia> cat_array = CategoricalArray(["A", "B", "B"], ordered=true)
-3-element CategoricalArray{String,1,UInt32}:
+3-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "B"
 
 julia> cat_infreq(cat_array)
-3-element CategoricalArray{String,1,UInt32}:
+3-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "B"
@@ -116,7 +116,7 @@ Categorical array with the least frequent levels lumped as "Other".
 
 ```jldoctest
 julia> cat_array = CategoricalArray(["A", "B", "C", "A", "B", "B", "D", "E", "F"], ordered=true)
-9-element CategoricalArray{String,1,UInt32}:
+9-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "C"
@@ -157,7 +157,7 @@ julia> arr = ["A", "B", "C", "A", "B", "B", "D", "E", missing]
  missing
  
 julia> as_categorical(arr)
-9-element CategoricalArray{Union{Missing, String},1,UInt32}:
+9-element CategoricalArrays.CategoricalArray{Union{Missing, String},1,UInt32}:
  "A"
  "B"
  "C"
@@ -191,7 +191,7 @@ Categorical array with the levels reordered.
 julia> cat_var = String["A", "B", "A", "B", "A", "B", "C", "C", "C"];
        order_var = [1, 2, 3, 4, 5, 6, 7, 8, 9];
        cat_reorder(cat_var, order_var, "mean")
-9-element CategoricalArray{String,1,UInt32}:
+9-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "A"
@@ -221,7 +221,7 @@ Categorical array with the levels collapsed.
 
 ```jldoctest
 julia> cat_array = CategoricalArray(["A", "B", "C", "D", "E"], ordered=true)
-5-element CategoricalArray{String,1,UInt32}:
+5-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "C"
@@ -231,7 +231,7 @@ julia> cat_array = CategoricalArray(["A", "B", "C", "D", "E"], ordered=true)
 julia> levels_map = Dict("A" => "A", "B" => "A", "C" => "C", "D" => "C", "E" => "E");
 
 julia> cat_collapse(cat_array, levels_map)
-5-element CategoricalArray{String,1,UInt32}:
+5-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
  "A"
  "A"
  "C"
@@ -258,7 +258,7 @@ Categorical array with levels lumped.
 # Examples
 ```jldoctest 
 julia> cat_array = CategoricalArray(["A", "B", "B", "C", "C", "D"])
-6-element CategoricalArray{String,1,UInt32}:
+6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
  "A" 
  "B"
  "B"
@@ -267,7 +267,7 @@ julia> cat_array = CategoricalArray(["A", "B", "B", "C", "C", "D"])
  "D"
 
 julia> cat_lump_min(cat_array, 2)  
-6-element CategoricalArray{String,1,UInt32}:
+6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "B"
@@ -295,7 +295,7 @@ Categorical array with levels lumped based on proportion.
 
 ```jldoctest
 julia> cat_array = CategoricalArray(["A", "B", "B", "C", "C", "D"])
-6-element CategoricalArray{String,1,UInt32}:
+6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
  "A"
  "B" 
  "B"
@@ -304,7 +304,7 @@ julia> cat_array = CategoricalArray(["A", "B", "B", "C", "C", "D"])
  "D"
  
 julia> cat_lump_prop(cat_array, 0.3)
-6-element CategoricalArray{String,1,UInt32}:
+6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
  "A"
  "B"
  "B"
