@@ -1,6 +1,13 @@
 # TidierCats.jl
 
-## What is TidierStrings.jl
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/TidierOrg/TidierCats.jl/blob/main/LICENSE)
+[![Docs: Latest](https://img.shields.io/badge/Docs-Latest-blue.svg)](https://tidierorg.github.io/TidierCats.jl/dev)
+[![Build Status](https://github.com/TidierOrg/TidierCats.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/TidierOrg/TidierCats.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![Downloads](https://shields.io/endpoint?url=https://pkgs.genieframework.com/api/v1/badge/Tidier&label=Downloads)](https://pkgs.genieframework.com?packages=TidierCats)
+
+<img src="/docs/src/assets/TidierCats_logo.png" align="right" style="padding-left:10px;" width="150"/>
+
+## What is TidierCats.jl
 
 `TidierCats.jl `is a 100% Julia implementation of the R forcats package. 
 
