@@ -15,6 +15,11 @@ try
   append!(Main.TidierData.not_vectorized[], [:cat_rev, :cat_relevel, :cat_infreq, :cat_lump, :cat_reorder, :cat_collapse, :cat_lump_min, :cat_lump_prop, :as_categorical])
 catch
 end
+
+try
+  append!(DocTestSetup.TidierData.not_vectorized[], [:cat_rev, :cat_relevel, :cat_infreq, :cat_lump, :cat_reorder, :cat_collapse, :cat_lump_min, :cat_lump_prop, :as_categorical])
+catch
+end
 end
 
 """
