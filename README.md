@@ -30,9 +30,8 @@ Pkg.add(url = "https://github.com/TidierOrg/TidierCats.jl.git")
 ## Examples
 
 ```julia
-using Tidier
+using TidierData
 using TidierCats
-using CategoricalArrays
 using Random
 
 Random.seed!(10)
