@@ -1,9 +1,8 @@
 using Documenter, DocumenterMarkdown
-using Tidier, TidierCats
-using CategoricalArrays
+using TidierData, TidierCats
 
 DocTestMeta = quote
-    using Tidier, TidierCats, DataFrames, Chain, Statistics
+    using TidierData, TidierCats, Statistics
 end
 DocMeta.setdocmeta!(TidierCats,
     :DocTestSetup,
