@@ -3,6 +3,7 @@ using TidierData, TidierCats
 
 DocTestMeta = quote
     using TidierData, TidierCats, Statistics
+    append!(TidierData.not_vectorized[], [:cat_rev, :cat_relevel, :cat_infreq, :cat_lump, :cat_reorder, :cat_collapse, :cat_lump_min, :cat_lump_prop, :as_categorical])
 end
 DocMeta.setdocmeta!(TidierCats,
     :DocTestSetup,
