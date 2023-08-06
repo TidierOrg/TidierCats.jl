@@ -1,6 +1,5 @@
-using Tidier
+using TidierData
 using TidierCats
-using CategoricalArrays
 using Random
 
 Random.seed!(10)
@@ -20,7 +19,7 @@ first(df, 5)
 # This function changes the order of levels in a categorical variable. It accepts two arguments - a column name and an array of levels in the desired order.
 
 custom_order = @chain df begin
-    @mutate(CatVar = ~cat_relevel(CatVar, ["Zilch", "Medium", "High", "Low"]))
+    @mutate(CatVar = cat_relevel(CatVar, ["Zilch", "Medium", "High", "Low"]))
 end
 
 print(levels(df[!,:CatVar]))
@@ -33,7 +32,7 @@ print(levels(custom_order[!,:CatVar]))
 # ## `cat_rev()`
 # This function reverses the order of levels in a categorical variable. It only requires one argument - the column name whose levels are to be reversed
 reversed_order = @chain df begin
-    @mutate(CatVar = ~cat_rev(CatVar))
+    @mutate(CatVar = cat_rev(CatVar))
 end
 
 print(levels(df[!,:CatVar]))
@@ -50,7 +49,7 @@ print(levels(reversed_order[!,:CatVar]))
 end
 
 orderedbyfrequency = @chain df begin
-    @mutate(CatVar = ~cat_infreq(CatVar))
+    @mutate(CatVar = cat_infreq(CatVar))
 end
 
 print(levels(df[!,:CatVar]))
@@ -68,7 +67,7 @@ end
 # This function lumps the least frequent levels into a new "Other" level. It accepts two arguments - a column name and an integer specifying the number of levels to keep.
 
 lumped_cats = @chain df begin
-    @mutate(CatVar = ~cat_lump(CatVar,2))
+    @mutate(CatVar = cat_lump(CatVar,2))
 end
 
 print(levels(df[!,:CatVar]))
@@ -91,7 +90,7 @@ df3 = DataFrame(
 )
 
 df4 = @chain df3 begin
-    @mutate(cat_var= ~cat_reorder(cat_var, order_var, "median" ))
+    @mutate(cat_var= cat_reorder(cat_var, order_var, "median" ))
 end
 
 
@@ -103,7 +102,7 @@ print(levels(df4[!,:cat_var]))
 
 
 @chain df3 begin
-    @mutate(catty = ~as_categorical(cat_var))
+    @mutate(catty = as_categorical(cat_var))
     @group_by(catty)
     #@summarise(median = median(order_var))
 end
@@ -112,7 +111,7 @@ end
 # This function collapses levels in a categorical variable according to a specified mapping. It requires two arguments - a categorical column and a dictionary that maps original levels to new ones.
 
 df5 = @chain df begin
-    @mutate(CatVar = ~cat_collapse(CatVar, Dict("Low" => "bad", "Zilch" => "bad")))
+    @mutate(CatVar = cat_collapse(CatVar, Dict("Low" => "bad", "Zilch" => "bad")))
 end
 
 print(levels(df[!,:CatVar]))
@@ -127,7 +126,7 @@ print(levels(df5[!,:CatVar]))
 test = DataFrame( w = ["A", "B", "C", "D"])
 
 @chain test begin 
-    @mutate(w = ~as_categorical(w))
+    @mutate(w = as_categorical(w))
 end
 
 # ## `cat_lump_min()`
@@ -137,7 +136,7 @@ end
     @count(CatVar)
 end
 lumpedbymin = @chain df begin
-    @mutate(CatVar = ~cat_lump_min(CatVar, 14))
+    @mutate(CatVar = cat_lump_min(CatVar, 14))
 end
 
 print(levels(df[!,:CatVar])) 
@@ -150,7 +149,7 @@ print(levels(lumpedbymin[!,:CatVar]))
 # This function wil lump any cargory with less than the minimum proportion and recateogrize it as "Other" as the default, or a category name chosen by the user
 
 lumpedbyprop = @chain df begin
-    @mutate(CatVar = ~cat_lump_prop(CatVar, .25, "wow"))
+    @mutate(CatVar = cat_lump_prop(CatVar, .25, "wow"))
 end
 
 
