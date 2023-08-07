@@ -13,7 +13,6 @@
 
 `TidierCats.jl` has one main goal: to implement forcats's straightforward syntax and of ease of use while working with categorical variables for Julia users. While this package was develeoped to work seamelessly with `Tidier.jl` fucntions and macros, it can also work as a indepentenly as a standalone package. This package is powered by CateogricalArrays.jl 
 
-
 ## What functions does TidierCats.jl support?
 
 - `cat_rev()`
@@ -24,7 +23,6 @@
 - `cat_lump_min()`
 - `cat_lump_prop()`
 - `as_categorical()`
-
 
 ## Installation
 
@@ -59,7 +57,7 @@ This function changes the order of levels in a categorical variable. It accepts 
 
 ```julia
 custom_order = @chain df begin
-    @mutate(CatVar = ~cat_relevel(CatVar, ["Zilch", "Medium", "High", "Low"]))
+    @mutate(CatVar = cat_relevel(CatVar, ["Zilch", "Medium", "High", "Low"]))
 end
 
 print(levels(df[!,:CatVar]))
@@ -76,7 +74,7 @@ This function reverses the order of levels in a categorical variable. It only re
 
 ```julia
 reversed_order = @chain df begin
-    @mutate(CatVar = ~cat_rev(CatVar))
+    @mutate(CatVar = cat_rev(CatVar))
 end
 
 print(levels(df[!,:CatVar]))
@@ -109,7 +107,7 @@ end
 
 ```julia
 orderedbyfrequency = @chain df begin
-    @mutate(CatVar = ~cat_infreq(CatVar))
+    @mutate(CatVar = cat_infreq(CatVar))
 end
 
 print(levels(df[!,:CatVar]))
@@ -126,7 +124,7 @@ This function lumps the least frequent levels into a new "Other" level. It accep
 
 ```julia
 lumped_cats = @chain df begin
-    @mutate(CatVar = ~cat_lump(CatVar,2))
+    @mutate(CatVar = cat_lump(CatVar,2))
 end
 
 print(levels(df[!,:CatVar]))
@@ -149,11 +147,11 @@ df3 = DataFrame(
 )
 
 df4 = @chain df3 begin
-    @mutate(cat_var= ~cat_reorder(cat_var, order_var, "median" ))
+    @mutate(cat_var= cat_reorder(cat_var, order_var, "median" ))
 end
 
 @chain df3 begin
-    @mutate(catty = ~as_categorical(cat_var))
+    @mutate(catty = as_categorical(cat_var))
     @group_by(cat_var)
     @summarise(median = median(order_var))
 end
@@ -179,7 +177,7 @@ This function collapses levels in a categorical variable according to a specifie
 
 ```julia
 df5 = @chain df begin
-    @mutate(CatVar = ~cat_collapse(CatVar, Dict("Low" => "bad", "Zilch" => "bad")))
+    @mutate(CatVar = cat_collapse(CatVar, Dict("Low" => "bad", "Zilch" => "bad")))
 end
 
 @chain df begin
@@ -215,7 +213,7 @@ This function converts a standard Julia array to a categorical array. The only a
 test = DataFrame( w = ["A", "B", "C", "D"])
 
 @chain test begin 
-    @mutate(w = ~as_categorical(w))
+    @mutate(w = as_categorical(w))
 end
 ```
 
@@ -234,7 +232,7 @@ This function wil lump any cargory with less than the minimum number of entries 
 
 ```julia
 lumpedbymin = @chain df begin
-    @mutate(CatVar = ~cat_lump_min(CatVar, 14))
+    @mutate(CatVar = cat_lump_min(CatVar, 14))
 end
 
 print(levels(df[!,:CatVar]))
@@ -252,7 +250,7 @@ This function wil lump any cargory with less than the minimum proportion and rec
 
 ```julia
 lumpedbyprop = @chain df begin
-    @mutate(CatVar = ~cat_lump_prop(CatVar, .25, "new name"))
+    @mutate(CatVar = cat_lump_prop(CatVar, .25, "new name"))
 end
 
 print(levels(df[!,:CatVar]))

@@ -1,5 +1,6 @@
 ```@meta
-DocTestSetup= quote
+DocTestSetup = quote
+using TidierData
 using TidierCats
 end
 ```
