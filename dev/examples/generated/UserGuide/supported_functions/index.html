@@ -508,9 +508,8 @@
 
   <h1>Supported Functions</h1>
 
-<div><div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="n">Tidier</span>
+<div><div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="n">TidierData</span>
 <span class="k">using</span><span class="w"> </span><span class="n">TidierCats</span>
-<span class="k">using</span><span class="w"> </span><span class="n">CategoricalArrays</span>
 <span class="k">using</span><span class="w"> </span><span class="n">Random</span>
 
 <span class="n">Random</span><span class="o">.</span><span class="n">seed!</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -518,7 +517,6 @@
 <span class="n">categories</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">"High"</span><span class="p">,</span><span class="w"> </span><span class="s">"Medium"</span><span class="p">,</span><span class="w"> </span><span class="s">"Low"</span><span class="p">,</span><span class="w"> </span><span class="s">"Zilch"</span><span class="p">]</span>
 
 <span class="n">random_indices</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="p">(</span><span class="n">categories</span><span class="p">),</span><span class="w"> </span><span class="mi">57</span><span class="p">)</span>
-
 
 <span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span>
 <span class="w">    </span><span class="n">ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">57</span><span class="p">,</span>
@@ -534,15 +532,15 @@
 <h2 id="cat_relevel"><code>cat_relevel()</code><a class="headerlink" href="#cat_relevel" title="Permanent link">¤</a></h2>
 <p>This function changes the order of levels in a categorical variable. It accepts two arguments - a column name and an array of levels in the desired order.</p>
 <div class="highlight"><pre><span></span><code><span class="n">custom_order</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@chain</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">CatVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">cat_relevel</span><span class="p">(</span><span class="n">CatVar</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s">"Zilch"</span><span class="p">,</span><span class="w"> </span><span class="s">"Medium"</span><span class="p">,</span><span class="w"> </span><span class="s">"High"</span><span class="p">,</span><span class="w"> </span><span class="s">"Low"</span><span class="p">]))</span>
+<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">CatVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cat_relevel</span><span class="p">(</span><span class="n">CatVar</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s">"Zilch"</span><span class="p">,</span><span class="w"> </span><span class="s">"Medium"</span><span class="p">,</span><span class="w"> </span><span class="s">"High"</span><span class="p">,</span><span class="w"> </span><span class="s">"Low"</span><span class="p">]))</span>
 <span class="k">end</span>
 
-<span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="ss">:CatVar</span><span class="p">]))</span>
+<span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">CatVar</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>["High", "Medium", "Low", "Zilch"]
 </code></pre></div>
 <p>and</p>
-<div class="highlight"><pre><span></span><code><span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">custom_order</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="ss">:CatVar</span><span class="p">]))</span>
+<div class="highlight"><pre><span></span><code><span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">custom_order</span><span class="o">.</span><span class="n">CatVar</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>["Zilch", "Medium", "High", "Low"]
 </code></pre></div>
@@ -551,15 +549,15 @@
 <h2 id="cat_rev"><code>cat_rev()</code><a class="headerlink" href="#cat_rev" title="Permanent link">¤</a></h2>
 <p>This function reverses the order of levels in a categorical variable. It only requires one argument - the column name whose levels are to be reversed</p>
 <div class="highlight"><pre><span></span><code><span class="n">reversed_order</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@chain</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">CatVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">cat_rev</span><span class="p">(</span><span class="n">CatVar</span><span class="p">))</span>
+<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">CatVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cat_rev</span><span class="p">(</span><span class="n">CatVar</span><span class="p">))</span>
 <span class="k">end</span>
 
-<span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="ss">:CatVar</span><span class="p">]))</span>
+<span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">CatVar</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>["High", "Medium", "Low", "Zilch"]
 </code></pre></div>
 <p>and</p>
-<div class="highlight"><pre><span></span><code><span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">reversed_order</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="ss">:CatVar</span><span class="p">]))</span>
+<div class="highlight"><pre><span></span><code><span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">reversed_order</span><span class="o">.</span><span class="n">CatVar</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>["Zilch", "Low", "Medium", "High"]
 </code></pre></div>
@@ -572,15 +570,15 @@
 <span class="k">end</span>
 
 <span class="n">orderedbyfrequency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@chain</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">CatVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">cat_infreq</span><span class="p">(</span><span class="n">CatVar</span><span class="p">))</span>
+<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">CatVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cat_infreq</span><span class="p">(</span><span class="n">CatVar</span><span class="p">))</span>
 <span class="k">end</span>
 
-<span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="ss">:CatVar</span><span class="p">]))</span>
+<span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">CatVar</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>["High", "Medium", "Low", "Zilch"]
 </code></pre></div>
 <p>and</p>
-<div class="highlight"><pre><span></span><code><span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">orderedbyfrequency</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="ss">:CatVar</span><span class="p">]))</span>
+<div class="highlight"><pre><span></span><code><span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">orderedbyfrequency</span><span class="o">.</span><span class="n">CatVar</span><span class="p">))</span>
 
 
 <span class="nd">@chain</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="k">begin</span>
@@ -595,15 +593,15 @@
 <h2 id="cat_lump"><code>cat_lump()</code><a class="headerlink" href="#cat_lump" title="Permanent link">¤</a></h2>
 <p>This function lumps the least frequent levels into a new "Other" level. It accepts two arguments - a column name and an integer specifying the number of levels to keep.</p>
 <div class="highlight"><pre><span></span><code><span class="n">lumped_cats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@chain</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">CatVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">cat_lump</span><span class="p">(</span><span class="n">CatVar</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">CatVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cat_lump</span><span class="p">(</span><span class="n">CatVar</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
 <span class="k">end</span>
 
-<span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="ss">:CatVar</span><span class="p">]))</span>
+<span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">CatVar</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>["High", "Medium", "Low", "Zilch"]
 </code></pre></div>
 <p>and</p>
-<div class="highlight"><pre><span></span><code><span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">lumped_cats</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="ss">:CatVar</span><span class="p">]))</span>
+<div class="highlight"><pre><span></span><code><span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">lumped_cats</span><span class="o">.</span><span class="n">CatVar</span><span class="p">))</span>
 
 
 <span class="nd">@chain</span><span class="w"> </span><span class="n">lumped_cats</span><span class="w"> </span><span class="k">begin</span>
@@ -623,22 +621,21 @@
 <span class="p">)</span>
 
 <span class="n">df4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@chain</span><span class="w"> </span><span class="n">df3</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">cat_var</span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">cat_reorder</span><span class="p">(</span><span class="n">cat_var</span><span class="p">,</span><span class="w"> </span><span class="n">order_var</span><span class="p">,</span><span class="w"> </span><span class="s">"median"</span><span class="w"> </span><span class="p">))</span>
+<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">cat_var</span><span class="o">=</span><span class="w"> </span><span class="n">cat_reorder</span><span class="p">(</span><span class="n">cat_var</span><span class="p">,</span><span class="w"> </span><span class="n">order_var</span><span class="p">,</span><span class="w"> </span><span class="s">"median"</span><span class="w"> </span><span class="p">))</span>
 <span class="k">end</span>
 
 
-<span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df3</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="ss">:cat_var</span><span class="p">]))</span>
+<span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df3</span><span class="o">.</span><span class="n">cat_var</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>["High", "Low", "Medium"]
 </code></pre></div>
 <p>and</p>
-<div class="highlight"><pre><span></span><code><span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df4</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="ss">:cat_var</span><span class="p">]))</span>
+<div class="highlight"><pre><span></span><code><span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df4</span><span class="o">.</span><span class="n">cat_var</span><span class="p">))</span>
 
 
 <span class="nd">@chain</span><span class="w"> </span><span class="n">df3</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">catty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">as_categorical</span><span class="p">(</span><span class="n">cat_var</span><span class="p">))</span>
+<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">catty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">as_categorical</span><span class="p">(</span><span class="n">cat_var</span><span class="p">))</span>
 <span class="w">    </span><span class="nd">@group_by</span><span class="p">(</span><span class="n">catty</span><span class="p">)</span>
-<span class="w">    </span><span class="c">#@summarise(median = median(order_var))</span>
 <span class="k">end</span>
 </code></pre></div>
 <p><b>GroupedDataFrame with 3 groups based on key: catty</b></p>
@@ -653,15 +650,15 @@
 <h2 id="cat_collapse"><code>cat_collapse()</code><a class="headerlink" href="#cat_collapse" title="Permanent link">¤</a></h2>
 <p>This function collapses levels in a categorical variable according to a specified mapping. It requires two arguments - a categorical column and a dictionary that maps original levels to new ones.</p>
 <div class="highlight"><pre><span></span><code><span class="n">df5</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@chain</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">CatVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">cat_collapse</span><span class="p">(</span><span class="n">CatVar</span><span class="p">,</span><span class="w"> </span><span class="kt">Dict</span><span class="p">(</span><span class="s">"Low"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">"bad"</span><span class="p">,</span><span class="w"> </span><span class="s">"Zilch"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">"bad"</span><span class="p">)))</span>
+<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">CatVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cat_collapse</span><span class="p">(</span><span class="n">CatVar</span><span class="p">,</span><span class="w"> </span><span class="kt">Dict</span><span class="p">(</span><span class="s">"Low"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">"bad"</span><span class="p">,</span><span class="w"> </span><span class="s">"Zilch"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">"bad"</span><span class="p">)))</span>
 <span class="k">end</span>
 
-<span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="ss">:CatVar</span><span class="p">]))</span>
+<span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">CatVar</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>["High", "Medium", "Low", "Zilch"]
 </code></pre></div>
 <p>and</p>
-<div class="highlight"><pre><span></span><code><span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df5</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="ss">:CatVar</span><span class="p">]))</span>
+<div class="highlight"><pre><span></span><code><span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df5</span><span class="o">.</span><span class="n">CatVar</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>["High", "Medium", "bad"]
 </code></pre></div>
@@ -672,7 +669,7 @@
 <div class="highlight"><pre><span></span><code><span class="n">test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">(</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">"A"</span><span class="p">,</span><span class="w"> </span><span class="s">"B"</span><span class="p">,</span><span class="w"> </span><span class="s">"C"</span><span class="p">,</span><span class="w"> </span><span class="s">"D"</span><span class="p">])</span>
 
 <span class="nd">@chain</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">as_categorical</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">as_categorical</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
 <span class="k">end</span>
 </code></pre></div>
 <div><div style="float: left;"><span>4×1 DataFrame</span></div><div style="clear: both;"></div></div>
@@ -686,15 +683,15 @@
 <span class="w">    </span><span class="nd">@count</span><span class="p">(</span><span class="n">CatVar</span><span class="p">)</span>
 <span class="k">end</span>
 <span class="n">lumpedbymin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@chain</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">CatVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">cat_lump_min</span><span class="p">(</span><span class="n">CatVar</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">))</span>
+<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">CatVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cat_lump_min</span><span class="p">(</span><span class="n">CatVar</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">))</span>
 <span class="k">end</span>
 
-<span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="ss">:CatVar</span><span class="p">]))</span>
+<span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">CatVar</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>["High", "Medium", "Low", "Zilch"]
 </code></pre></div>
 <p>and</p>
-<div class="highlight"><pre><span></span><code><span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">lumpedbymin</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="ss">:CatVar</span><span class="p">]))</span>
+<div class="highlight"><pre><span></span><code><span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">lumpedbymin</span><span class="o">.</span><span class="n">CatVar</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>["High", "Low", "Other"]
 </code></pre></div>
@@ -702,16 +699,16 @@
 <h2 id="cat_lump_min_1"><code>cat_lump_min()</code><a class="headerlink" href="#cat_lump_min_1" title="Permanent link">¤</a></h2>
 <p>This function wil lump any cargory with less than the minimum proportion and recateogrize it as "Other" as the default, or a category name chosen by the user</p>
 <div class="highlight"><pre><span></span><code><span class="n">lumpedbyprop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@chain</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">CatVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">cat_lump_prop</span><span class="p">(</span><span class="n">CatVar</span><span class="p">,</span><span class="w"> </span><span class="mf">.25</span><span class="p">,</span><span class="w"> </span><span class="s">"wow"</span><span class="p">))</span>
+<span class="w">    </span><span class="nd">@mutate</span><span class="p">(</span><span class="n">CatVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cat_lump_prop</span><span class="p">(</span><span class="n">CatVar</span><span class="p">,</span><span class="w"> </span><span class="mf">.25</span><span class="p">,</span><span class="w"> </span><span class="s">"wow"</span><span class="p">))</span>
 <span class="k">end</span>
 
 
-<span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="ss">:CatVar</span><span class="p">]))</span>
+<span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">CatVar</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>["High", "Medium", "Low", "Zilch"]
 </code></pre></div>
 <p>and</p>
-<div class="highlight"><pre><span></span><code><span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">lumpedbyprop</span><span class="p">[</span><span class="o">!</span><span class="p">,</span><span class="ss">:CatVar</span><span class="p">]))</span>
+<div class="highlight"><pre><span></span><code><span class="n">print</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">lumpedbyprop</span><span class="o">.</span><span class="n">CatVar</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>["High", "wow"]
 </code></pre></div>
