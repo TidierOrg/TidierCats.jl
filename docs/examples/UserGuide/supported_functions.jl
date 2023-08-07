@@ -8,7 +8,6 @@ categories = ["High", "Medium", "Low", "Zilch"]
 
 random_indices = rand(1:length(categories), 57)
 
-
 df = DataFrame(
     ID = 1:57,
     CatVar = categorical([categories[i] for i in random_indices], levels = categories)
@@ -22,11 +21,11 @@ custom_order = @chain df begin
     @mutate(CatVar = cat_relevel(CatVar, ["Zilch", "Medium", "High", "Low"]))
 end
 
-print(levels(df[!,:CatVar]))
+print(levels(df.CatVar))
 
 # and
 
-print(levels(custom_order[!,:CatVar]))
+print(levels(custom_order.CatVar))
 
 
 # ## `cat_rev()`
@@ -35,11 +34,11 @@ reversed_order = @chain df begin
     @mutate(CatVar = cat_rev(CatVar))
 end
 
-print(levels(df[!,:CatVar]))
+print(levels(df.CatVar))
 
 # and
 
-print(levels(reversed_order[!,:CatVar]))
+print(levels(reversed_order.CatVar))
 
 # ## `cat_infreq()`
 # This function reorders levels of a categorical variable based on their frequencies, with most frequent level first. The single argument is column name
@@ -52,11 +51,11 @@ orderedbyfrequency = @chain df begin
     @mutate(CatVar = cat_infreq(CatVar))
 end
 
-print(levels(df[!,:CatVar]))
+print(levels(df.CatVar))
 
 # and 
 
-print(levels(orderedbyfrequency[!,:CatVar]))
+print(levels(orderedbyfrequency.CatVar))
 
 
 @chain df begin
@@ -70,11 +69,11 @@ lumped_cats = @chain df begin
     @mutate(CatVar = cat_lump(CatVar,2))
 end
 
-print(levels(df[!,:CatVar]))
+print(levels(df.CatVar))
 
 # and
 
-print(levels(lumped_cats[!,:CatVar]))
+print(levels(lumped_cats.CatVar))
 
 
 @chain lumped_cats begin
@@ -94,17 +93,16 @@ df4 = @chain df3 begin
 end
 
 
-print(levels(df3[!,:cat_var]))
+print(levels(df3.cat_var))
 
 # and
 
-print(levels(df4[!,:cat_var]))
+print(levels(df4.cat_var))
 
 
 @chain df3 begin
     @mutate(catty = as_categorical(cat_var))
     @group_by(catty)
-    #@summarise(median = median(order_var))
 end
 
 # ## `cat_collapse()`
@@ -114,11 +112,11 @@ df5 = @chain df begin
     @mutate(CatVar = cat_collapse(CatVar, Dict("Low" => "bad", "Zilch" => "bad")))
 end
 
-print(levels(df[!,:CatVar]))
+print(levels(df.CatVar))
 
 # and
 
-print(levels(df5[!,:CatVar]))
+print(levels(df5.CatVar))
 
 # ## `as_categorical()`
 # This function converts a standard Julia array to a categorical array. The only argument it needs is the colunn name to be converted.
@@ -139,11 +137,11 @@ lumpedbymin = @chain df begin
     @mutate(CatVar = cat_lump_min(CatVar, 14))
 end
 
-print(levels(df[!,:CatVar])) 
+print(levels(df.CatVar)) 
 
 # and
 
-print(levels(lumpedbymin[!,:CatVar]))
+print(levels(lumpedbymin.CatVar))
 
 # ## `cat_lump_min()`
 # This function wil lump any cargory with less than the minimum proportion and recateogrize it as "Other" as the default, or a category name chosen by the user
@@ -153,11 +151,11 @@ lumpedbyprop = @chain df begin
 end
 
 
-print(levels(df[!,:CatVar]))
+print(levels(df.CatVar))
 
 # and
 
-print(levels(lumpedbyprop[!,:CatVar]))
+print(levels(lumpedbyprop.CatVar))
 
 
 # ## `cat_na_value_to_level()`
