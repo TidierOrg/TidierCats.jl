@@ -7,7 +7,8 @@ using Reexport
 
 @reexport using CategoricalArrays
 
-export cat_rev, cat_relevel, cat_infreq, cat_lump, cat_reorder, cat_collapse, cat_lump_min, cat_lump_prop, as_categorical
+export cat_rev, cat_relevel, cat_infreq, cat_lump, cat_reorder, cat_collapse, cat_lump_min, cat_lump_prop
+export as_categorical, as_integer
 include("catsdocstrings.jl")
 
 """
@@ -174,6 +175,17 @@ function cat_lump_prop(cat_array, prop::Float64, other_level::String = "Other")
     new_cat_array = CategoricalArray(lumped_array, ordered=true)
     
     return new_cat_array
+end
+
+"""
+$docstring_as_integer
+"""
+function as_integer(cat_value::CategoricalValue)
+    return CategoricalArrays.levelcode(cat_value)
+end
+
+function as_integer(cat_array::CategoricalArray)
+    return CategoricalArrays.levelcode.(cat_array)
 end
 
 end

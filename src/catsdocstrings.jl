@@ -313,3 +313,7 @@ julia> cat_lump_prop(cat_array, 0.3)
  "Other"
  ```
 """
+const docstring_as_integer =
+"""
+Converts a CategoricalValue or CategoricalArray to an integer or vector of integers.
+"""
