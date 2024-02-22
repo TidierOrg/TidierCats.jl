@@ -11,7 +11,7 @@
 
 `TidierCats.jl `is a 100% Julia implementation of the R forcats package. 
 
-`TidierCats.jl` has one main goal: to implement forcats's straightforward syntax and of ease of use while working with categorical variables for Julia users. While this package was develeoped to work seamelessly with `Tidier.jl` fucntions and macros, it can also work as a indepentenly as a standalone package. This package is powered by CateogricalArrays.jl 
+`TidierCats.jl` has one main goal: to implement forcats's straightforward syntax and of ease of use while working with categorical variables for Julia users. While this package was develeoped to work seamelessly with `Tidier.jl` functions and macros, it can also work as a independently as a standalone package. This package is powered by CateogricalArrays.jl. 
 
 ## What functions does TidierCats.jl support?
 
@@ -228,7 +228,7 @@ end
 ```
 
 #### `cat_lump_min()`
-This function wil lump any cargory with less than the minimum number of entries and recateogrize it as "Other" as the default, or a category name chosen by the user.
+This function wil lump any category with less than the minimum number of entries and recategorize it as "Other" (the default), or a category name chosen by the user.
 
 ```julia
 lumpedbymin = @chain df begin
@@ -246,7 +246,7 @@ print(levels(lumpedbymin[!,:CatVar]))
 
 
 #### `cat_lump_prop()`
-This function wil lump any cargory with less than the minimum proportion and recateogrize it as "Other" as the default, or a category name chosen by the user.
+This function wil lump all categories with less than the minimum proportion and recateogrize it as "Other" (the default), or a category name chosen by the user.
 
 ```julia
 lumpedbyprop = @chain df begin
