@@ -156,11 +156,3 @@ print(levels(df.CatVar))
 # and
 
 print(levels(lumpedbyprop.CatVar))
-
-
-# ## `cat_na_value_to_level()`
-# This function will replace any missing values in a categorical array with "Missing" to make sure they appear on plots. 
-
-#x = categorical([missing, "A", "B", missing, "A"])
-#cat_na_value_to_level(x)
-#print(levels(x))
