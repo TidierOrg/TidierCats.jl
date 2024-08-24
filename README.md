@@ -22,6 +22,9 @@
 - `cat_collapse()`
 - `cat_lump_min()`
 - `cat_lump_prop()`
+- `cat_recode()`
+- `cat_other()`
+- `cat_replace_missing()`
 - `as_categorical()`
 
 ## Installation
