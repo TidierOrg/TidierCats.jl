@@ -8,7 +8,7 @@ using Reexport
 @reexport using CategoricalArrays
 
 export cat_rev, cat_relevel, cat_infreq, cat_lump, cat_reorder, cat_collapse, cat_lump_min, cat_lump_prop
-export as_categorical, as_integer
+export as_categorical, as_integer, cat_replace_missing, cat_other, cat_recode
 include("catsdocstrings.jl")
 
 """
@@ -24,10 +24,58 @@ end
 """
 $docstring_cat_relevel
 """
-function cat_relevel(cat_array::CategoricalArray, levels_order::Vector{String})
-    ordered_levels = [x for x in levels_order if x in levels(cat_array)]
-    append!(ordered_levels, [x for x in levels(cat_array) if x ∉ ordered_levels])
-    new_cat_array = CategoricalArray([String(v) for v in cat_array], ordered=true, levels=ordered_levels)
+function cat_relevel(cat_array::CategoricalArray{Union{Missing, String}}, levels_order::Vector{Union{String, Missing}})
+    unwrapped_levels = unwrap.(levels(cat_array))
+    ordered_levels = [x for x in levels_order if !ismissing(x) && x in unwrapped_levels]
+    if any(ismissing, levels_order) && any(ismissing, unwrapped_levels)
+        push!(ordered_levels, missing)
+    end
+    append!(ordered_levels, [x for x in unwrapped_levels if !ismissing(x) && x ∉ ordered_levels])
+    levels!(cat_array, ordered_levels)
+    return cat_array
+end
+
+function cat_relevel(cat_array, levels_order::Vector{String}; after::Int = 0)
+    current_levels = levels(cat_array)
+    
+    # Separate levels into those mentioned in levels_order and those not
+    mentioned_levels = [x for x in levels_order if x in current_levels]
+    unmentioned_levels = [x for x in current_levels if x ∉ mentioned_levels]
+    
+    # Determine where to insert the mentioned levels
+    if after == 0
+        new_levels = vcat(mentioned_levels, unmentioned_levels)
+    elseif after > 0 && after <= length(current_levels)
+        before = current_levels[1:after]
+        after_levels = current_levels[(after+1):end]
+        new_levels = vcat(
+            [l for l in before if l ∉ mentioned_levels],
+            [l for l in after_levels if l ∉ mentioned_levels],
+            mentioned_levels
+        )
+        # Move mentioned levels to the correct position
+        mentioned_set = Set(mentioned_levels)
+        insert_pos = after + 1
+        for (i, level) in enumerate(new_levels)
+            if i > after && level ∉ mentioned_set
+                insert_pos = i
+                break
+            end
+        end
+        new_levels = vcat(
+            new_levels[1:(insert_pos-1)],
+            mentioned_levels,
+            new_levels[insert_pos:end]
+        )
+        new_levels = unique(new_levels)  # Remove any duplicates
+    else
+        error("'after' must be between 0 and the number of levels")
+    end
+    
+    # Create a new CategoricalArray with the updated level order
+    new_cat_array = copy(cat_array)
+    levels!(new_cat_array, new_levels)
+    
     return new_cat_array
 end
 
@@ -187,5 +235,99 @@ end
 function as_integer(cat_array::CategoricalArray)
     return CategoricalArrays.levelcode.(cat_array)
 end
+
+"""
+$docstring_cat_replace_missing
+"""
+function cat_replace_missing(cat_array::CategoricalArray{Union{Missing, String}}, txt::String)
+    replace(cat_array, missing => txt)
+end
+
+"""
+$docstring_cat_other
+"""
+function cat_other(f::Union{CategoricalArray, AbstractVector}; 
+                   keep::Union{Nothing, Vector{String}} = nothing, 
+                   drop::Union{Nothing, Vector{String}} = nothing, 
+                   other_level::String = "Other")
+    
+    if !isnothing(keep) && !isnothing(drop)
+        error("Only one of 'keep' or 'drop' should be specified, not both.")
+    end
+    
+    if isnothing(keep) && isnothing(drop)
+        error("Either 'keep' or 'drop' must be specified.")
+    end
+    
+    # Convert to CategoricalArray if it's not already
+    if !(f isa CategoricalArray)
+        f = categorical(f)
+    end
+    
+    current_levels = levels(f)
+    
+    if !isnothing(keep)
+        levels_to_change = setdiff(current_levels, keep)
+    else  # drop is specified
+        levels_to_change = intersect(current_levels, drop)
+    end
+    
+    # Create a new CategoricalArray
+    new_f = copy(f)
+    
+    # Replace levels
+    for level in levels_to_change
+        new_f[new_f .== level] .= other_level
+    end
+    
+    # Ensure 'other_level' is at the end of levels
+    new_levels = union(setdiff(current_levels, levels_to_change), [other_level])
+    levels!(new_f, new_levels)
+    
+    return new_f
+end
+
+
+"""
+$docstring_cat_recode
+"""
+function cat_recode(f::Union{CategoricalArray, AbstractVector}; kwargs...)
+    # Convert to CategoricalArray if it's not already
+    if !(f isa CategoricalArray)
+        f = categorical(f)
+    end
+
+    # Create a new CategoricalArray
+    new_f = copy(f)
+    
+    # Iterate over the keyword arguments
+    for (new_level, old_levels) in kwargs
+        old_levels_str = [String(level) for level in old_levels]  # Convert to string if needed
+        
+        if new_level === nothing
+            # Remove the old levels by setting them to missing
+            for old_level in old_levels_str
+                new_f[new_f .== old_level] .= missing
+            end
+        else
+            new_level_str = String(new_level)  # Convert new level to string
+            # Recode the old levels to the new level
+            for old_level in old_levels_str
+                if old_level in levels(new_f)
+                    new_f[new_f .== old_level] .= new_level_str
+                else
+                    @warn "Unknown level in input factor: $old_level"
+                end
+            end
+        end
+    end
+
+    # Clean up the levels (remove missing levels)
+    levels!(new_f, unique(skipmissing(new_f)))
+
+    return new_f
+end
+
+
 
 end

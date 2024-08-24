@@ -36,14 +36,14 @@ julia> cat_rev(cat_array)
 
 const docstring_cat_relevel = 
 """
-    cat_relevel(cat_array::CategoricalArray, levels_order::Vector{String})
+    cat_relevel(cat_array::CategoricalArray, levels_order::Vector{String}, after::Int=0)
 
 Reorders the levels in a categorical array according to the provided order.
 
 # Arguments
 `cat_array`: Input categorical array.
 `levels_order`: Vector of levels in the desired order.
-
+`after`: Position after which to insert the new levels. Default is ignored
 # Returns
 Categorical array with levels reordered according to levels_order.
 
@@ -59,14 +59,16 @@ julia> cat_array = CategoricalArray(["A", "B", "C", "A", "B", "B"], ordered=true
  "B"
  "B"
 
-julia> cat_relevel(cat_array, ["B", "A", "C"])
-6-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
- "A"
- "B"
- "C"
- "A"
- "B"
- "B"
+julia> println(levels(cat_relevel(cat_array, ["B", "A", "C"])))
+["B", "A", "C"]
+
+julia> println(levels(cat_relevel(cat_array, ["A"], after=1)))
+["B", "A", "C"]
+
+julia> cat_array = CategoricalArray(["A", "B", "C", "A", "B", missing], ordered=true);
+
+julia> println(levels(cat_relevel(cat_array, ["C", "A", "B", missing]), skipmissing=false))
+Union{Missing, String}["C", "A", "B", missing]
 ```
 """
 
@@ -316,4 +318,93 @@ julia> cat_lump_prop(cat_array, 0.3)
 const docstring_as_integer =
 """
 Converts a CategoricalValue or CategoricalArray to an integer or vector of integers.
+"""
+const docstring_cat_replace_missing = 
+"""
+    cat_replace_missing(cat_array::CategoricalArray, missing_level::String="missing")
+
+Lumps infrequent levels in a categorical array into an 'other' level based on proportion threshold.
+
+# Arguments
+- `cat_array`: Categorical array to lump
+- `prop`: Proportion threshold. Levels with proportions below this will be lumped.  
+- `other_level`: The level name to lump infrequent levels into. Default is "Other".
+
+# Returns
+Categorical array with levels lumped based on proportion.
+
+# Examples
+
+```jldoctest
+julia> cat_array = CategoricalArray(["a", "b", missing, "a", missing, "c"]);
+
+julia > print(cat_missing_to_lvl(cat_array))
+6-element CategoricalArray{Union{Missing, String},1,UInt32}:
+ "a"
+ "b"
+ missing
+ "a"
+ missing
+ "c"
+ 
+julia> print(cat_missing_to_lvl(cat_array, "unknown"))
+6-element CategoricalArray{Union{Missing, String},1,UInt32}:
+ "a"
+ "b"
+ "unknown"
+ "a"
+ "unknown"
+ "c"
+ ```
+"""
+
+const docstring_cat_recode = 
+"""
+    cat_recode(cat_array::Union{CategoricalArray, AbstractVector}; kwargs...)
+
+Recodes the levels in a categorical array based on a provided mapping.
+
+# Arguments
+- `cat_array`: Categorical array to recode
+- `kwargs`: A dictionary with the original levels as keys and the new levels as values. Levels not in the keys will be kept the same.
+
+# Returns
+Categorical array with the levels recoded.
+
+# Examples
+
+```jldoctest
+julia> x = CategoricalArray(["apple", "tomato", "banana", "dear"]);
+
+julia> println(levels(cat_recode(x, fruit = ["apple", "banana"], nothing = ["tomato"])))
+["fruit", "nothing", "dear"]
+```
+"""
+
+const docstring_cat_other =
+"""
+    cat_other(cat_array::CategoricalArray, other_level::String="Other")
+
+Replaces all levels in a categorical array with the 'other' level.
+
+# Arguments
+- `cat_array`: Categorical array to replace levels
+- `other_level`: The level name to replace all levels with. Default is "Other".
+
+# Returns
+Categorical array with all levels replaced by the 'other' level.
+
+# Examples
+
+```jldoctest
+julia> cat_array = CategoricalArray(["A", "B", "C", "D", "E"]);
+
+julia> cat_other(cat_array, drop = ["A", "B"])
+5-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+ "Other"
+ "Other"
+ "C"
+ "D"
+ "E"
+```
 """
