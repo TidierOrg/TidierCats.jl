@@ -8,7 +8,8 @@ using Reexport
 @reexport using CategoricalArrays
 
 export cat_rev, cat_relevel, cat_infreq, cat_lump, cat_reorder, cat_collapse, cat_lump_min, cat_lump_prop
-export as_categorical, as_integer, cat_replace_missing, cat_other, cat_recode
+export as_categorical, as_integer, cat_replace_missing, cat_other, cat_recode, cat_expand
+export cat_ages
 include("catsdocstrings.jl")
 
 """
@@ -130,8 +131,16 @@ end
 $docstring_as_categorical
 """
 function as_categorical(arr::AbstractArray)
-  return CategoricalArray(map(x -> ismissing(x) ? missing : x, arr)) 
+    T = eltype(arr)
+    if T <: Number
+        # keep numeric data as numeric categories
+        return CategoricalArray{Union{Missing, T}}(arr)
+    else
+        # fallback: treat them as strings
+        return CategoricalArray(map(x -> ismissing(x) ? missing : string(x), arr))
+    end
 end
+
 
 """
 $docstring_cat_reorder
@@ -328,6 +337,34 @@ function cat_recode(f::Union{CategoricalArray, AbstractVector}; kwargs...)
     return new_f
 end
 
+
+"""
+$docstring_cat_expand
+"""
+function cat_expand(f::CategoricalArray, new_levels...; after=Inf)
+    # Get the current levels of the factor
+    current_levels = levels(f)
+    
+    # Filter out new levels that already exist
+    unique_new_levels = [level for level in new_levels if level ∉ current_levels]
+
+    # Decide where to place the new levels based on the `after` argument
+    if after == Inf
+        # Append the new levels at the end if `after` is Inf (default)
+        expanded_levels = vcat(current_levels, unique_new_levels)
+    elseif after == 0
+        # Prepend the new levels at the beginning if `after` is 0
+        expanded_levels = vcat(unique_new_levels, current_levels)
+    else
+        # Insert the new levels after the specified index
+        expanded_levels = vcat(current_levels[1:after], unique_new_levels, current_levels[after+1:end])
+    end
+    
+    # Update the levels of the categorical array
+    levels!(f, expanded_levels)
+    
+    return f
+end
 
 
 end
