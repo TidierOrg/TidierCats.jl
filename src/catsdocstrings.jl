@@ -344,7 +344,7 @@ julia> cat_array = CategoricalArray(["a", "b", missing, "a", missing, "c"]);
  missing
  "c"
 
- julia> print(cat_replace_missing(cat_array))
+ julia> println(cat_replace_missing(cat_array))
 6-element CategoricalArray{Union{Missing, String},1,UInt32}:
  "a"
  "b"
@@ -353,7 +353,7 @@ julia> cat_array = CategoricalArray(["a", "b", missing, "a", missing, "c"]);
  "missing"
  "c"
 
-julia> print(cat_replace_missing(cat_array, "unknown"))
+julia> println(cat_replace_missing(cat_array, "unknown"))
 6-element CategoricalArray{Union{Missing, String},1,UInt32}:
  "a"
  "b"
