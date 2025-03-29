@@ -352,7 +352,7 @@ julia> print(cat_missing_to_lvl(cat_array, "unknown"))
  "a"
  "unknown"
  "c"
- ```
+```
 """
 
 const docstring_cat_recode = 
