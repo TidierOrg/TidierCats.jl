@@ -248,7 +248,7 @@ end
 """
 $docstring_cat_replace_missing
 """
-function cat_replace_missing(cat_array::CategoricalArray{Union{Missing, String}}, txt::String)
+function cat_replace_missing(cat_array::CategoricalArray{Union{Missing, String}}, txt::String="missing")
     replace(cat_array, missing => txt)
 end
 
