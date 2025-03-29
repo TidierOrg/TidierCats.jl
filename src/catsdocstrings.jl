@@ -321,24 +321,21 @@ Converts a CategoricalValue or CategoricalArray to an integer or vector of integ
 """
 const docstring_cat_replace_missing = 
 """
-    cat_replace_missing(cat_array::CategoricalArray, missing_level::String="missing")
+    cat_replace_missing(cat_array::CategoricalArray, missing_level::String)
 
-Lumps infrequent levels in a categorical array into an 'other' level based on proportion threshold.
+Replaces missing values within a CategoricalArray with a placeholder string.
 
 # Arguments
 - `cat_array`: Categorical array to lump
-- `prop`: Proportion threshold. Levels with proportions below this will be lumped.  
-- `other_level`: The level name to lump infrequent levels into. Default is "Other".
+- `missing_level`: The string that will be used inplace of missing values.
 
 # Returns
-Categorical array with levels lumped based on proportion.
+Categorical array without any missing elements. 
 
 # Examples
 
 ```jldoctest
 julia> cat_array = CategoricalArray(["a", "b", missing, "a", missing, "c"]);
-
-julia > print(cat_missing_to_lvl(cat_array))
 6-element CategoricalArray{Union{Missing, String},1,UInt32}:
  "a"
  "b"
