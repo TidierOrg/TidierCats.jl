@@ -321,7 +321,7 @@ Converts a CategoricalValue or CategoricalArray to an integer or vector of integ
 """
 const docstring_cat_replace_missing = 
 """
-    cat_replace_missing(cat_array::CategoricalArray, missing_level::String)
+    cat_replace_missing(cat_array::CategoricalArray, missing_level::String = "missing")
 
 Replaces missing values within a CategoricalArray with a placeholder string.
 
