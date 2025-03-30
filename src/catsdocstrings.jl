@@ -333,34 +333,27 @@ Replaces missing values within a CategoricalArray with a placeholder string.
 Categorical array without any missing elements. 
 
 # Examples
-
 ```jldoctest
-julia> cat_array = CategoricalArray(["a", "b", missing, "a", missing, "c"])
-6-element CategoricalArray{Union{Missing, String},1,UInt32}:
- "a"
- "b"
+julia> cat_array = CategoricalArray(["apple", "tomato", missing, "dear"])
+4-element CategoricalArrays.CategoricalArray{Union{Missing, String},1,UInt32}:
+ "apple"
+ "tomato"
  missing
- "a"
- missing
- "c"
+ "dear"
 
- julia> cat_replace_missing(cat_array)
-6-element CategoricalArray{String,1,UInt32}:
- "a"
- "b"
+julia> cat_replace_missing(cat_array)
+4-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+ "apple"
+ "tomato"
  "missing"
- "a"
- "missing"
- "c"
+ "dear"
 
 julia> cat_replace_missing(cat_array, "unknown")
-6-element CategoricalArray{String,1,UInt32}:
- "a"
- "b"
+4-element CategoricalArrays.CategoricalArray{String,1,UInt32}:
+ "apple"
+ "tomato"
  "unknown"
- "a"
- "unknown"
- "c"
+ "dear"
 ```
 """
 
