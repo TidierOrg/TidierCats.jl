@@ -335,7 +335,7 @@ Categorical array without any missing elements.
 # Examples
 
 ```jldoctest
-julia> cat_array = CategoricalArray(["a", "b", missing, "a", missing, "c"]);
+julia> cat_array = CategoricalArray(["a", "b", missing, "a", missing, "c"])
 6-element CategoricalArray{Union{Missing, String},1,UInt32}:
  "a"
  "b"
@@ -344,8 +344,8 @@ julia> cat_array = CategoricalArray(["a", "b", missing, "a", missing, "c"]);
  missing
  "c"
 
- julia> println(cat_replace_missing(cat_array))
-6-element CategoricalArray{Union{Missing, String},1,UInt32}:
+ julia> cat_replace_missing(cat_array)
+6-element CategoricalArray{String,1,UInt32}:
  "a"
  "b"
  "missing"
@@ -353,8 +353,8 @@ julia> cat_array = CategoricalArray(["a", "b", missing, "a", missing, "c"]);
  "missing"
  "c"
 
-julia> println(cat_replace_missing(cat_array, "unknown"))
-6-element CategoricalArray{Union{Missing, String},1,UInt32}:
+julia> cat_replace_missing(cat_array, "unknown")
+6-element CategoricalArray{String,1,UInt32}:
  "a"
  "b"
  "unknown"
